@@ -20,6 +20,37 @@
 ********************************************************************************************/
 
 #include "raylib.h"
+#include "iostream"
+
+unsigned int ElfHash(unsigned char* data)
+{
+    unsigned int hash = 0;
+    unsigned int x = 0;
+
+    for (unsigned char* i = data; *i != '\0'; i++)
+    {
+        hash = (hash << 4) + *i;
+        if ((x = hash & 0xF0000000L) != 0)
+        {
+            hash ^= (x >> 24);
+            hash &= ~x;
+        }
+    }
+
+    return (hash & 0x7FFFFFFF);
+}
+
+unsigned int customhash(unsigned char* data, unsigned int size)
+{
+    unsigned int hash = size;
+
+    for (unsigned int i = 0; i < size; i++)
+    {
+        hash += (int)data;
+    }
+
+    return hash;
+}
 
 int main(int argc, char* argv[])
 {
@@ -33,21 +64,25 @@ int main(int argc, char* argv[])
     SetTargetFPS(60);
     //--------------------------------------------------------------------------------------
 
-
+    int checkSum = 0;
+    unsigned int lenght = 0;
+    unsigned char* input = new unsigned char[0];
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
 
         // Update
         //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
+        std::cin >> input;
+        std::cin >> lenght;
+        checkSum = customhash(input, lenght);
         //----------------------------------------------------------------------------------
-
+        
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
-        ClearBackground(RAYWHITE);
+        ClearBackground(GetColor(checkSum));
 
         EndDrawing();
         //----------------------------------------------------------------------------------
