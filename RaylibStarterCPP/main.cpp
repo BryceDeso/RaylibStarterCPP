@@ -42,11 +42,11 @@ unsigned int ElfHash(unsigned char* data)
 
 unsigned int customhash(unsigned char* data, unsigned int size)
 {
-    unsigned int hash = size;
+    unsigned int hash = 0;
 
     for (unsigned int i = 0; i < size; i++)
     {
-        hash += (int)data;
+        hash = (hash * 100) + data[i];
     }
 
     return hash;
